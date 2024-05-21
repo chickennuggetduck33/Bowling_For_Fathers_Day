@@ -12,14 +12,9 @@ root.title("Bowling For Fathers Day!")
 canvas = tk.Canvas(root, width=600, height=800, bg="lightblue")
 canvas.pack()
 
-# Define global variables
-ball = None
-pins = []
-fireworks = []
-message_displayed = False
 
-
-def create_lane():
+# Create the bowling lane
+def create_lane(canvas):
     lane_color = "#D2B48C"  # Light brown or tan color
     lane_top = 30
     lane_bottom = 775
@@ -30,9 +25,8 @@ def create_lane():
     )
 
 
-# Function to create the bowling pins in a triangular formation
-def create_pins():
-    global pins
+# Create the bowling pins in a triangular formation
+def create_pins(canvas):
     pin_color = "white"
     pin_radius = 10
     pin_positions = [
@@ -47,6 +41,7 @@ def create_pins():
         (325, 50),
         (375, 50),  # Fourth row
     ]
+    pins = []
     for pos in pin_positions:
         pin = canvas.create_oval(
             pos[0] - pin_radius,
@@ -56,11 +51,11 @@ def create_pins():
             fill=pin_color,
         )
         pins.append(pin)
+    return pins
 
 
-# Function to create the bowling ball at the bottom center of the screen
-def create_ball():
-    global ball
+# Create the bowling ball at the bottom center of the screen
+def create_ball(canvas):
     ball_radius = 25
     ball_x = 300
     ball_y = 750
@@ -71,31 +66,30 @@ def create_ball():
         ball_y + ball_radius,
         fill="black",
     )
+    return ball
 
 
-# Function to handle the ball's motion when the mouse is clicked
-def roll_ball(event):
-    global ball
+# Handle the ball's motion when the mouse is clicked
+def roll_ball(event, canvas, ball, pins):
     ball_speed = -10  # Negative value to move the ball upwards
     while canvas.coords(ball)[1] > 50:
         canvas.move(ball, 0, ball_speed)
         root.update()
         time.sleep(0.05)
-    knock_down_pins()
+    knock_down_pins(canvas, pins, ball)
 
 
-# Function to knock down pins and display fireworks
-def knock_down_pins():
-    global pins, ball
+# Knock down pins and display fireworks
+def knock_down_pins(canvas, pins, ball):
+    canvas.delete(ball)
     for pin in pins:
         canvas.delete(pin)
-    pins.clear()
-    canvas.delete(ball)
-    display_fireworks()
+
+    display_fireworks(canvas)
 
 
-# Function to create star-shaped fireworks
-def create_star(x, y, size, color):
+# Create star-shaped fireworks
+def create_star(canvas, x, y, size, color):
     points = []
     for i in range(5):
         angle = i * 144  # Star points (144 degrees between each point)
@@ -106,41 +100,35 @@ def create_star(x, y, size, color):
     return star
 
 
-# Function to display fireworks
-def display_fireworks():
-    global fireworks
+# Display fireworks
+def display_fireworks(canvas):
     start_time = time.time()
-    while time.time() - start_time < 4:  # Display fireworks for 3 seconds
+    while time.time() - start_time < 4:  # Display fireworks for 4 seconds
         x = random.randint(200, 500)
         y = random.randint(150, 750)
         size = random.randint(100, 200)  # Larger size for the star
         color = random.choice(["red", "green", "blue", "yellow", "purple", "orange"])
-        firework = create_star(x, y, size, color)
-        fireworks.append(firework)
+        firework = create_star(canvas, x, y, size, color)
         root.update()
         time.sleep(0.5)
         canvas.delete(firework)
-        fireworks.remove(firework)
-    display_message()
+    display_message(canvas)
 
 
-# Function to display "HAPPY FATHER'S DAY!!!" message
-def display_message():
-    global message_displayed
-    if not message_displayed:
-        canvas.create_text(
-            300, 200, text="HAPPY FATHER'S DAY!!!", font=("Helvetica", 35), fill="black"
-        )
-        message_displayed = True
+# Display "HAPPY FATHER'S DAY!!!" message
+def display_message(canvas):
+    canvas.create_text(
+        300, 200, text="HAPPY FATHER'S DAY!!!", font=("Arial", 35), fill="black"
+    )
 
 
-# Call the functions to create the game elements
-create_lane()
-create_pins()
-create_ball()
+# Initialize the game elements
+create_lane(canvas)
+pins = create_pins(canvas)
+ball = create_ball(canvas)
 
 # Bind the mouse click event to the roll_ball function
-canvas.bind("<Button-1>", roll_ball)
+canvas.bind("<Button-1>", lambda event: roll_ball(event, canvas, ball, pins))
 
 # Start the Tkinter main loop
 root.mainloop()
