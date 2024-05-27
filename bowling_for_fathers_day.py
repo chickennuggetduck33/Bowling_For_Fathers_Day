@@ -1,3 +1,10 @@
+"""
+Bowling For Father's Day! Code Challenge Description:
+Follow the TODOs in the code to complete the tasks.
+At the end of the lesson you will have created a bowling game 
+with a Father's Day message!!!
+"""
+
 # Import necessary modules from the tkinter library
 import tkinter as tk
 import random
@@ -15,11 +22,12 @@ canvas.pack()
 
 # Create the bowling lane
 def create_lane(canvas):
-    lane_color = "#D2B48C"  # Light brown or tan color
-    lane_top = 30
-    lane_bottom = 775
-    lane_left = 200
-    lane_right = 400
+    # TODO 1. Create 5 varibles to store the lane color, top, bottom, left, and right.  Set the lane color to "#D2B48C", the top to 30, the bottom to 775, the left to 200, and the right to 400. Change the variable names in the create_rectangle function to use the variables you created.
+    lane_color = "#D2B48C"  # ;
+    lane_top = 30  # ;
+    lane_bottom = 775  # ;
+    lane_left = 200  # ;
+    lane_right = 400  # ;
     canvas.create_rectangle(
         lane_left, lane_top, lane_right, lane_bottom, fill=lane_color, outline=""
     )
@@ -27,8 +35,9 @@ def create_lane(canvas):
 
 # Create the bowling pins in a triangular formation
 def create_pins(canvas):
-    pin_color = "white"
-    pin_radius = 10
+    # TODO 2. Create 2 variables to store the pin color and radius.  Set the pin color to "white" and the pin radius to 10.
+    pin_color = "white"  # ;
+    pin_radius = 10  # ;
     pin_positions = [
         (300, 125),  # Front pin
         (275, 100),
@@ -41,7 +50,8 @@ def create_pins(canvas):
         (325, 50),
         (375, 50),  # Fourth row
     ]
-    pins = []
+    # TODO 3. Create an empty list called pins.  Hint: pins = []
+    pins = []  # ;
     for pos in pin_positions:
         pin = canvas.create_oval(
             pos[0] - pin_radius,
@@ -50,15 +60,17 @@ def create_pins(canvas):
             pos[1] + pin_radius,
             fill=pin_color,
         )
-        pins.append(pin)
+        # TODO 4. Append the pin to the pins list.  Hint: pins.append(pin)
+        pins.append(pin)  # ;
     return pins
 
 
 # Create the bowling ball at the bottom center of the screen
 def create_ball(canvas):
-    ball_radius = 25
-    ball_x = 300
-    ball_y = 750
+    # TODO 5. Create 3 variables to store the ball radius, x position, and y position.  Set the ball radius to 25, the x position to 300, and the y position to 750. Change the variable names in the create_oval function to use the variables you created.
+    ball_radius = 25  # ;
+    ball_x = 300  # ;
+    ball_y = 750  # ;
     ball = canvas.create_oval(
         ball_x - ball_radius,
         ball_y - ball_radius,
@@ -76,7 +88,8 @@ def roll_ball(event, canvas, ball, pins):
         canvas.move(ball, 0, ball_speed)
         root.update()
         time.sleep(0.05)
-    knock_down_pins(canvas, pins, ball)
+    # TODO 6. Call the knock_down_pins function outside of the while loop and pass in the canvas, pins, and ball.  Hint: knock_down_pins(canvas, pins, ball)
+    knock_down_pins(canvas, pins, ball)  # ;
 
 
 # Knock down pins and display fireworks
@@ -84,13 +97,14 @@ def knock_down_pins(canvas, pins, ball):
     canvas.delete(ball)
     for pin in pins:
         canvas.delete(pin)
-
-    display_fireworks(canvas)
+    # TODO 7. Call the display_fireworks function outside of the for loop and pass in the canvas.  Hint: display_fireworks(canvas)
+    display_fireworks(canvas)  # ;
 
 
 # Create star-shaped fireworks
 def create_star(canvas, x, y, size, color):
-    points = []
+    # TODO 8. Create an empty list called points.  Hint: points = [] and change the variable name in the create_polygon function to use the points list.
+    points = []  # ;
     for i in range(5):
         angle = i * 144  # Star points (144 degrees between each point)
         x_offset = size * math.cos(math.radians(angle))
@@ -112,6 +126,7 @@ def display_fireworks(canvas):
         root.update()
         time.sleep(0.5)
         canvas.delete(firework)
+    # TODO 9. Call the display_message function outside of the while loop and pass in the canvas.  Hint: display_message(canvas)
     display_message(canvas)
 
 
@@ -122,6 +137,9 @@ def display_message(canvas):
     )
 
 
+# The Code Below Initializes the Game Elements and Binds the Mouse Click Event
+# to the roll_ball Function to Start the Game Loop
+# Do not modify the code below.
 # Initialize the game elements
 create_lane(canvas)
 pins = create_pins(canvas)
